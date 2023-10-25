@@ -89,6 +89,12 @@ async function main() {
     const excludeTargets = Deno.env.get("EXCLUDE_TARGETS")!.split(",");
     targets = targets.filter((t) => !excludeTargets.includes(t.id));
   }
+  if (Deno.env.has("PRIORITIZED_TARGETS")) {
+    const prioritizedTargets = Deno.env.get("PRIORITIZED_TARGETS")!.split(",");
+    targets = targets.sort((a, _b) =>
+      prioritizedTargets.includes(a.id) ? -1 : 1
+    );
+  }
   console.log(
     bgBlue("Total"),
     "Targets:",
