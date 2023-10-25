@@ -153,8 +153,6 @@ async function fetchMessages(target: Target) {
           break;
         } else if (offset >= totalResults) {
           break;
-        } else if (messages.length > 100) {
-          break;
         }
         offset += data.messages.length;
       } else if (
@@ -176,7 +174,7 @@ async function fetchMessages(target: Target) {
 
 async function deleteMessages(messages: any, target: Target) {
   for (const messageAr of messages) {
-    const message:any  = messageAr[0]
+    const message: any = messageAr[0]
     await fetch(
       `https://discord.com/api/v9/channels/${message.channel_id}/messages/${message.id}`,
       {
