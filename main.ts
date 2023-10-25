@@ -126,9 +126,8 @@ async function fetchMessages(target: Target) {
 
   let messages: Array<any> = [];
   while (true) {
-    const endpoint = `https://discord.com/api/v9/${
-      target.type === TargetType.Guild ? "guilds" : "channels"
-    }/${target.id}/messages/search?author_id=${userId!}&include_nsfw=true&offset=${offset}`;
+    const endpoint = `https://discord.com/api/v9/${target.type === TargetType.Guild ? "guilds" : "channels"
+      }/${target.id}/messages/search?author_id=${userId!}&include_nsfw=true&offset=${offset}`;
     try {
       const response: Response = await fetch(
         endpoint,
@@ -154,7 +153,7 @@ async function fetchMessages(target: Target) {
           break;
         } else if (offset >= totalResults) {
           break;
-        } else if (messages.length > 100){
+        } else if (messages.length > 100) {
           break;
         }
         offset += data.messages.length;
@@ -172,12 +171,12 @@ async function fetchMessages(target: Target) {
       console.log("Failed to get the messages. Retrying...");
     }
   }
-
   return { totalResults, messages };
 }
 
 async function deleteMessages(messages: any, target: Target) {
-  for (const message of messages) {
+  for (const messageAr of messages) {
+    const message:any  = messageAr[0]
     await fetch(
       `https://discord.com/api/v9/channels/${message.channel_id}/messages/${message.id}`,
       {
@@ -188,7 +187,8 @@ async function deleteMessages(messages: any, target: Target) {
     await wait(2000);
     console.log(
       bgBlue("Deleting"),
-      bgYellow(target.name)
+      bgYellow(target.name),
+      message.content
     )
   }
 }
